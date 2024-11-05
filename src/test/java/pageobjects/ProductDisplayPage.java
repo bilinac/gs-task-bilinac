@@ -15,16 +15,12 @@ public class ProductDisplayPage {
     getCommands().waitForAndGetVisibleElementLocated(PRODUCT_DISPLAY_PAGE);
   }
 
-  public ProductDisplayPage selectSmallSize() {
+  public void selectSmallSize() {
     getCommands().waitForAndClickOnElementLocated(SIZE_SMALL_BUTTON);
-    return this;
   }
 
-  public ProductDisplayPage selectAddToBag() {
+  public void selectAddToBag() {
     getCommands().waitForAndClickOnElementLocated(ADD_TO_BAG_BUTTON);
     getCommands().waitForAndGetVisibleElementLocated(ADD_TO_BAG_BUTTON);
-    return this;
   }
-
-
 }

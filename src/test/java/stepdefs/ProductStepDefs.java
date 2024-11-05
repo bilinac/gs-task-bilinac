@@ -57,4 +57,17 @@ public class ProductStepDefs {
     assertThat(bagPage.getRemoveProductMessage()).as("Expected product is not in Bag").contains("You removed an item from your bag.");
   }
 
+  @And("adding the quantity")
+  public void addingQuantity(){
+    BagPage bagPage = new BagPage();
+    List<Long> variantIds = bagPage.getVariantIdsInBag();
+    bagPage.updateProductQuantity();
+    assertThat(variantIds).as("Quantity is increased").contains(productId);
+  }
+
+  @Then("the product quantity has been updated to desired quantity {int}")
+  public void verifyProductQuantityISUpdated(int desiredQuantity) {
+    BagPage bagPage = new BagPage();
+    assertThat(bagPage.getProductQuantity()).as("Expected product is not in Bag").isEqualTo(String.valueOf(desiredQuantity));
+  }
 }

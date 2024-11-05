@@ -13,4 +13,14 @@ Feature: Add To Bag
     And remove product from the bag
     Then the product is successfully removed from the Bag
 
-    #AC3
+  #AC2
+  Scenario: Product quantity is increased
+    Given the user is on a product page
+    When adding the product to the Bag
+    And adding the quantity
+    Then the product quantity has been updated to desired quantity 3
+
+  #AC3
+    #Given there are products in the bag
+    #When I remove quantity
+    #Then product quantity is removed from the bag
