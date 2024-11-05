@@ -14,6 +14,11 @@ public class BagPage {
   private static final By BAG_PAGE = By.cssSelector("[data-locator-id='miniBag-component']");
   private static final By BAG_ITEMS = By.cssSelector("[data-locator-id^='miniBag-miniBagItem']");
   public static final String GS_LOCATOR_ATTRIBUTE = "data-locator-id";
+  private static final By REMOVE_MESSAGE = By.cssSelector("[data-locator-id^='snackbox-component']");
+
+  private static By getRemoveFromBagButton(Long id) {
+    return By.cssSelector(String.format("[data-locator-id='miniBag-remove-%s-remove']", id.toString()));
+  }
 
   public BagPage() {
     getCommands().waitForAndGetVisibleElementLocated(BAG_PAGE);
@@ -31,5 +36,13 @@ public class BagPage {
 
   private long getVariantId(WebElement bagItem) {
     return extractVariantIDFromString(getCommands().getAttributeFromElement(bagItem, GS_LOCATOR_ATTRIBUTE));
+  }
+
+  public void removeProduct(Long variantId) {
+    getCommands().waitForAndClickOnElementLocated(getRemoveFromBagButton(variantId));
+  }
+
+  public String getRemoveProductMessage() {
+    return getCommands().waitForAndGetVisibleElementLocated(REMOVE_MESSAGE).getText();
   }
 }

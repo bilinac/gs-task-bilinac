@@ -1,5 +1,6 @@
 package stepdefs;
 
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -25,7 +26,7 @@ public class ProductStepDefs {
   public void theUserIsOnAProductPage() {
     driver.get("https://uk.gymshark.com/products/gymshark-speed-t-shirt-black-aw23");
     productId = 39654522814667L;
-    new ProductDisplayPage().closeCookieBanner();
+    new ProductDisplayPage();
   }
 
   @When("adding the product to the Bag")
@@ -41,4 +42,19 @@ public class ProductStepDefs {
     List<Long> variantIds = bagPage.getVariantIdsInBag();
     assertThat(variantIds).as("Expected product is in Bag").contains(productId);
   }
+
+  @And("remove product from the bag")
+  public void removeFromBag() {
+    BagPage bagPage = new BagPage();
+    List<Long> variantIds = bagPage.getVariantIdsInBag();
+    bagPage.removeProduct(variantIds.getFirst());
+    assertThat(variantIds).as("Expected product is in Bag").contains(productId);
+  }
+
+  @Then("the product is successfully removed from the Bag")
+  public void verifyRemovedProduct(){
+    BagPage bagPage = new BagPage();
+    assertThat(bagPage.getRemoveProductMessage()).as("Expected product is not in Bag").contains("You removed an item from your bag.");
+  }
+
 }
