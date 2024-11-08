@@ -17,10 +17,13 @@ Feature: Add To Bag
   Scenario: Product quantity is increased
     Given the user is on a product page
     When adding the product to the Bag
-    And adding the quantity
-    Then the product quantity has been updated to desired quantity 3
+    And adding the quantity "2"
+    Then the product quantity has been updated to desired quantity "2"
 
   #AC3
-    #Given there are products in the bag
-    #When I remove quantity
-    #Then product quantity is removed from the bag
+  Scenario: Product quantity is removed
+    Given the user is on a product page
+    And there are products in the bag
+    And adding the quantity "2"
+    When I remove quantity
+    Then product quantity is removed from the bag

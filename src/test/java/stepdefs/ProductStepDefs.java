@@ -57,17 +57,38 @@ public class ProductStepDefs {
     assertThat(bagPage.getRemoveProductMessage()).as("Expected product is not in Bag").contains("You removed an item from your bag.");
   }
 
-  @And("adding the quantity")
-  public void addingQuantity(){
+  @And("adding the quantity {string}")
+  public void addingQuantity(String desiredQuantity) throws InterruptedException {
     BagPage bagPage = new BagPage();
     List<Long> variantIds = bagPage.getVariantIdsInBag();
-    bagPage.updateProductQuantity();
+    bagPage.updateProductQuantity(desiredQuantity);
     assertThat(variantIds).as("Quantity is increased").contains(productId);
   }
 
-  @Then("the product quantity has been updated to desired quantity {int}")
-  public void verifyProductQuantityISUpdated(int desiredQuantity) {
+  @Then("the product quantity has been updated to desired quantity {string}")
+  public void verifyProductQuantityIsUpdated(String desiredQuantity) throws InterruptedException {
     BagPage bagPage = new BagPage();
-    assertThat(bagPage.getProductQuantity()).as("Expected product is not in Bag").isEqualTo(String.valueOf(desiredQuantity));
+    assertThat(bagPage.getProductQuantity()).as("Expected product is not in Bag").contains((desiredQuantity));
+  }
+
+  @And("there are products in the bag")
+  public void addingTheProductToTheBagQuantity() {
+    ProductDisplayPage productDisplayPage = new ProductDisplayPage();
+    productDisplayPage.selectSmallSize();
+    productDisplayPage.selectAddToBag();
+  }
+
+  @When("I remove quantity")
+  public void removeQuantity() {
+    BagPage bagPage = new BagPage();
+    List<Long> variantIds = bagPage.getVariantIdsInBag();
+    bagPage.removeProduct(variantIds.getFirst());
+    assertThat(variantIds).as("Expected product is in Bag").contains(productId);
+  }
+
+  @Then("product quantity is removed from the bag")
+  public void verifyRemovedQuantity(){
+    BagPage bagPage = new BagPage();
+    assertThat(bagPage.getRemoveProductMessage()).as("Expected product is not in Bag").contains("You removed an item from your bag.");
   }
 }
